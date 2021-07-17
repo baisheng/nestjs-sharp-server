@@ -79,7 +79,6 @@ export class AppController {
         const bufferNameTextSVG = Buffer.from(nameSVG);
         const bufferDateTextSVG = Buffer.from(dateSVG);
         // const qrcode
-        // console.log(bgPath)
         return sharp(bgPath)
             .composite([ {
                 // input: this.generateMimeTypeOverlay('image'),
