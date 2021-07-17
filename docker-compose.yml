@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+  picker-sharp-api:
+#    environment:
+#      - NODE_ENV=production
+#      - NODE_ENV=development
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - /app/node_modules
+    networks:
+      - traefik
+    command: yarn start:prod
+    #    command: sh docker-entrypoint.sh
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.picker-sharp-api0.middlewares=https-redirect@file"
+      - "traefik.http.routers.picker-sharp-api0.entrypoints=http"
+      - "traefik.http.routers.picker-sharp-api0.rule=Host(`sharp-api.picker.cc`)"
+      - "traefik.http.routers.picker-sharp-api1.middlewares=https-redirect@file"
+      - "traefik.http.routers.picker-sharp-api1.entrypoints=https"
+      - "traefik.http.routers.picker-sharp-api1.tls=true"
+      - "traefik.http.routers.picker-sharp-api1.rule=Host(`sharp-api.picker.cc`)"
+      - "traefik.http.services.picker-sharp-backend.loadbalancer.server.scheme=http"
+      - "traefik.http.services.picker-sharp-backend.loadbalancer.server.port=3000"
+networks:
+  traefik:
+    external: true
